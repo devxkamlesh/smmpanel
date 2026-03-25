@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { sendWelcomeEmail } from "@/lib/email/client";
 
 export async function signIn(formData: FormData) {
   const email = formData.get("email") as string;
@@ -43,6 +44,11 @@ export async function signUp(formData: FormData) {
   if (error) {
     return { success: false, error: error.message };
   }
+
+  // Send welcome email (non-blocking)
+  sendWelcomeEmail(email, username).catch((err) => {
+    console.error("Failed to send welcome email:", err);
+  });
 
   revalidatePath("/", "layout");
   redirect("/new-order");

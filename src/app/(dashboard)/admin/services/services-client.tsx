@@ -1,9 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { Service } from "@/types";
+import { Service, Category } from "@/types";
 import { toggleServiceStatus, deleteService } from "@/lib/actions/admin";
-import { Trash2, Eye, EyeOff } from "lucide-react";
+import { 
+  duplicateService, 
+  bulkUpdateServices, 
+  bulkUpdateRatesByPercentage,
+  createService 
+} from "@/lib/actions/service-management";
+import { 
+  Trash2, 
+  Eye, 
+  EyeOff, 
+  Edit, 
+  Copy, 
+  Plus, 
+  TrendingUp, 
+  TrendingDown,
+  CheckSquare,
+  Square
+} from "lucide-react";
+import EditServiceModal from "./edit-service-modal";
+import CreateServiceModal from "./create-service-modal";
 
 export default function ServicesClient({ services }: { services: any[] }) {
   const [loading, setLoading] = useState(false);

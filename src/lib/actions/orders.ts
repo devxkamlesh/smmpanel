@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Order, Service } from "@/types";
 import { revalidatePath } from "next/cache";
 import { getProviderForService } from "@/lib/providers";
+import { sendOrderConfirmationEmail } from "@/lib/email/client";
 
 export async function getOrders() {
   const supabase = await createClient();
