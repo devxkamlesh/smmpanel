@@ -1,26 +1,137 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Colors - SMM Panel Design System "Velocity Blue" */
+  --color-primary: #004ac6;
+  --color-primary-container: #2563eb;
+  --color-primary-fixed: #dbe1ff;
+  --color-primary-fixed-dim: #b4c5ff;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #eeefff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-secondary: #712ae2;
+  --color-secondary-container: #8a4cfc;
+  --color-secondary-fixed: #eaddff;
+  --color-on-secondary: #ffffff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-tertiary: #0051b1;
+  --color-tertiary-container: #0f69dc;
+  --color-tertiary-fixed: #d8e2ff;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+
+  --color-surface: #f7f9fb;
+  --color-surface-bright: #f7f9fb;
+  --color-surface-container: #eceef0;
+  --color-surface-container-high: #e6e8ea;
+  --color-surface-container-highest: #e0e3e5;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-dim: #d8dadc;
+
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #434655;
+  --color-outline: #737686;
+  --color-outline-variant: #c3c6d7;
+
+  --color-inverse-surface: #2d3133;
+  --color-inverse-on-surface: #eff1f3;
+  --color-inverse-primary: #b4c5ff;
+
+  /* Platform brand colors */
+  --color-facebook: #1877F2;
+  --color-instagram: #E4405F;
+  --color-twitter: #000000;
+  --color-linkedin: #0A66C2;
+  --color-youtube: #FF0000;
+  --color-tiktok: #000000;
+  --color-telegram: #26A5E4;
+  --color-spotify: #1DB954;
+  --color-soundcloud: #FF5500;
+  --color-whatsapp: #25D366;
+  --color-threads: #000000;
+  --color-reddit: #FF4500;
+  --color-quora: #A82400;
+  --color-deezer: #A238FF;
+  --color-audiomack: #FFA200;
+
+  /* Font */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Spacing scale */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+
+  /* Shadows */
+  --shadow-ambient: 0 4px 32px rgba(25, 28, 30, 0.06);
+  --shadow-card: 0 2px 16px rgba(25, 28, 30, 0.04);
+  --shadow-elevated: 0 8px 40px rgba(25, 28, 30, 0.08);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.4s ease-out;
+  --animate-slide-right: slide-right 0.3s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-right {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
   }
 }
 
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* Glass effect utility */
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Ghost border utility */
+.ghost-border {
+  border: 1px solid rgba(195, 198, 215, 0.15);
+}
+
+/* Gradient backgrounds */
+.gradient-hero {
+  background: linear-gradient(135deg, #004ac6 0%, #712ae2 100%);
+}
+
+.gradient-hero-subtle {
+  background: linear-gradient(135deg, #004ac6 0%, #2563eb 50%, #712ae2 100%);
 }
