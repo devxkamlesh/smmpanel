@@ -13,10 +13,15 @@ export default function UsersClient({ users }: { users: Profile[] }) {
   const handleRoleChange = async (userId: string, role: "user" | "admin" | "reseller") => {
     setLoading(true);
     try {
-      await updateUserRole(userId, role);
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to update role");
+      const result = await updateUserRole(userId, role);
+      if (result.success) {
+        alert(result.message);
+        window.location.reload();
+      } else {
+        alert(result.error || "Failed to update role");
+      }
+    } catch (error: any) {
+      alert(error.message || "Failed to update role");
     } finally {
       setLoading(false);
     }
@@ -25,10 +30,15 @@ export default function UsersClient({ users }: { users: Profile[] }) {
   const handleStatusChange = async (userId: string, status: "active" | "suspended" | "banned") => {
     setLoading(true);
     try {
-      await updateUserStatus(userId, status);
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to update status");
+      const result = await updateUserStatus(userId, status);
+      if (result.success) {
+        alert(result.message);
+        window.location.reload();
+      } else {
+        alert(result.error || "Failed to update status");
+      }
+    } catch (error: any) {
+      alert(error.message || "Failed to update status");
     } finally {
       setLoading(false);
     }
@@ -37,25 +47,35 @@ export default function UsersClient({ users }: { users: Profile[] }) {
   const handleBalanceUpdate = async (userId: string, balance: number) => {
     setLoading(true);
     try {
-      await updateUserBalance(userId, balance);
-      setShowEditModal(false);
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to update balance");
+      const result = await updateUserBalance(userId, balance);
+      if (result.success) {
+        alert(result.message);
+        setShowEditModal(false);
+        window.location.reload();
+      } else {
+        alert(result.error || "Failed to update balance");
+      }
+    } catch (error: any) {
+      alert(error.message || "Failed to update balance");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (userId: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+    if (!confirm("Are you sure you want to delete this user? This action cannot be undone.")) return;
     
     setLoading(true);
     try {
-      await deleteUser(userId);
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to delete user");
+      const result = await deleteUser(userId);
+      if (result.success) {
+        alert(result.message);
+        window.location.reload();
+      } else {
+        alert(result.error || "Failed to delete user");
+      }
+    } catch (error: any) {
+      alert(error.message || "Failed to delete user");
     } finally {
       setLoading(false);
     }
