@@ -22,10 +22,19 @@ import {
   Square
 } from "lucide-react";
 import EditServiceModal from "./edit-service-modal";
-import CreateServiceModal from "./create-service-modal";
 
 export default function ServicesClient({ services }: { services: any[] }) {
   const [loading, setLoading] = useState(false);
+  const [editingServiceId, setEditingServiceId] = useState<number | null>(null);
+  
+  // Extract unique categories from services
+  const categories = Array.from(
+    new Map(
+      services
+        .filter(s => s.category)
+        .map(s => [s.category.id, s.category])
+    ).values()
+  ) as Category[];
 
   const handleToggleStatus = async (serviceId: number, currentStatus: boolean) => {
     setLoading(true);
@@ -54,7 +63,17 @@ export default function ServicesClient({ services }: { services: any[] }) {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <>
+      {editingServiceId && (
+        <EditServiceModal
+          serviceId={editingServiceId}
+          categories={categories}
+          onClose={() => setEditingServiceId(null)}
+          onSuccess={() => window.location.reload()}
+        />
+      )}
+      
+      <div className="overflow-x-auto">
       <table className="w-full">
         <thead className="bg-surface-container-low">
           <tr>
@@ -106,6 +125,14 @@ export default function ServicesClient({ services }: { services: any[] }) {
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center gap-2">
                   <button
+                    onClick={() => setEditingServiceId(service.id)}
+                    disabled={loading}
+                    className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                    title="Edit Service"
+                  >
+                    <Edit className="w-4 h-4 text-primary" />
+                  </button>
+                  <button
                     onClick={() => handleToggleStatus(service.id, service.is_active)}
                     disabled={loading}
                     className="p-2 rounded-lg hover:bg-surface-container transition-colors"
@@ -132,5 +159,6 @@ export default function ServicesClient({ services }: { services: any[] }) {
         </tbody>
       </table>
     </div>
+    </>
   );
 }

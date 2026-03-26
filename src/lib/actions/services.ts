@@ -22,7 +22,19 @@ export async function getServices(platform?: string) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching services:", error);
+    console.error("Error fetching services:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+      platform,
+    });
+
+    // Check if it's an RLS policy error
+    if (error.code === "42501" || error.message.includes("policy")) {
+      console.error("RLS POLICY ERROR: Services table is not accessible. Run 05_fix_rls_policies.sql");
+    }
+
     return [];
   }
 
@@ -66,7 +78,19 @@ export async function getCategories(platform?: string) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching categories:", error);
+    console.error("Error fetching categories:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+      platform,
+    });
+
+    // Check if it's an RLS policy error
+    if (error.code === "42501" || error.message.includes("policy")) {
+      console.error("RLS POLICY ERROR: Categories table is not accessible. Run 05_fix_rls_policies.sql");
+    }
+
     return [];
   }
 

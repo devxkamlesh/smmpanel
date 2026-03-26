@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PLATFORMS, type Service, type Category } from "@/types";
 
 interface ServicesClientProps {
@@ -11,12 +12,17 @@ interface ServicesClientProps {
 export default function ServicesClient({ initialServices }: ServicesClientProps) {
   const [search, setSearch] = useState("");
   const [platform, setPlatform] = useState("all");
+  const router = useRouter();
 
   const filtered = initialServices.filter((s) => {
     const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase());
     const matchesPlatform = platform === "all" || s.category.platform === platform;
     return matchesSearch && matchesPlatform;
   });
+
+  const handleServiceClick = (serviceId: number) => {
+    router.push(`/new-order?service=${serviceId}`);
+  };
 
   return (
     <div className="animate-fade-in">
@@ -81,7 +87,12 @@ export default function ServicesClient({ initialServices }: ServicesClientProps)
             </thead>
             <tbody className="divide-y divide-outline-variant/10">
               {filtered.map((svc) => (
-                <tr key={svc.id} className="hover:bg-surface-container-low/50 transition-colors">
+                <tr 
+                  key={svc.id} 
+                  onClick={() => handleServiceClick(svc.id)}
+                  className="hover:bg-surface-container-low/50 transition-colors cursor-pointer"
+                  title="Click to order this service"
+                >
                   <td className="px-6 py-4 font-medium text-on-surface">{svc.id}</td>
                   <td className="px-6 py-4 text-on-surface">{svc.name}</td>
                   <td className="px-6 py-4 font-semibold text-primary">${svc.rate.toFixed(4)}</td>

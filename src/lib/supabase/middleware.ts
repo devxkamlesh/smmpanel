@@ -29,6 +29,7 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // IMPORTANT: Refresh the session to get latest user data
   const {
     data: { user },
   } = await supabase.auth.getUser();

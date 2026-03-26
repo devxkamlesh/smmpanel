@@ -65,6 +65,7 @@ export interface Order {
   start_count: number | null;
   remains: number | null;
   external_order_id: string | null;
+  custom_comments: string | null;
   created_at: string;
   updated_at: string;
   service?: Service;

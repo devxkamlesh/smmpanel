@@ -31,24 +31,34 @@ export async function signUp(formData: FormData) {
 
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp({
+  console.log("Signing up user with username:", username);
+
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
         username,
       },
+      emailRedirectTo: undefined, // Disable email confirmation
     },
   });
 
   if (error) {
+    console.error("Signup error:", error);
     return { success: false, error: error.message };
   }
 
-  // Send welcome email (non-blocking)
-  sendWelcomeEmail(email, username).catch((err) => {
-    console.error("Failed to send welcome email:", err);
+  console.log("User signed up successfully:", {
+    userId: data.user?.id,
+    email: data.user?.email,
+    metadata: data.user?.user_metadata,
   });
+
+  // Send welcome email (non-blocking) - commented out to avoid rate limit
+  // sendWelcomeEmail(email, username).catch((err) => {
+  //   console.error("Failed to send welcome email:", err);
+  // });
 
   revalidatePath("/", "layout");
   redirect("/new-order");

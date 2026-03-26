@@ -71,7 +71,7 @@ export default function DashboardClient({ profile, children }: DashboardClientPr
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-surface-container-lowest shadow-ambient flex flex-col transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:static lg:inset-auto`}
+        } lg:sticky lg:top-0 lg:h-screen`}
       >
         {/* User profile section */}
         <div className="p-5 flex flex-col items-center">

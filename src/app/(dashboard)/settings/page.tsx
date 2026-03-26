@@ -1,32 +1,18 @@
-import { createClient } from "@/lib/supabase/server";
+import { getProfile } from "@/lib/actions/profile";
 import { redirect } from "next/navigation";
 import SettingsClient from "./settings-client";
+import { unstable_noStore as noStore } from "next/cache";
 
 export default async function SettingsPage() {
-  const supabase = await createClient();
+  // Disable caching to always get fresh profile data
+  noStore();
+  
+  const profile = await getProfile();
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
+  if (!profile) {
+    console.error("No profile found, redirecting to login");
     redirect("/login");
   }
-
-  // Fetch profile data
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
-  if (error || !profile) {
-    console.error("Error fetching profile:", error);
-    redirect("/login");
-  }
-
-  // Ensure email is included
-  const profileWithEmail = {
-    ...profile,
-    email: user.email || profile.email,
-  };
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -37,7 +23,7 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      <SettingsClient profile={profileWithEmail} />
+      <SettingsClient profile={profile} />
     </div>
   );
 }

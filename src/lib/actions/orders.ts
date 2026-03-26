@@ -37,7 +37,8 @@ export async function getOrders() {
 export async function createOrder(
   serviceId: number,
   link: string,
-  quantity: number
+  quantity: number,
+  customComments?: string
 ) {
   const supabase = await createClient();
 
@@ -131,6 +132,7 @@ export async function createOrder(
       charge,
       status: "pending",
       remains: quantity,
+      custom_comments: customComments || null,
     })
     .select()
     .single();
@@ -152,6 +154,7 @@ export async function createOrder(
         service: providerServiceId,
         link: link.trim(),
         quantity,
+        comments: customComments,
       });
 
       if (providerResponse.success && providerResponse.order) {
