@@ -41,15 +41,17 @@ export async function updateOrderStatuses() {
     for (const order of orders) {
       try {
         // Get provider for this service
-        const provider = await getProviderForService(order.service_id);
-        if (!provider) {
+        const providerInfo = await getProviderForService(order.service_id);
+        if (!providerInfo) {
           console.log(`[CRON] No provider for order ${order.id}`);
           continue;
         }
 
+        const { provider } = providerInfo;
+
         // Get status from provider
         const statusResponse = await provider.getOrderStatus({
-          order_id: order.external_order_id!,
+          order: order.external_order_id!,
         });
 
         if (!statusResponse.success) {
@@ -59,7 +61,7 @@ export async function updateOrderStatuses() {
         }
 
         // Map provider status to our status
-        const newStatus = mapProviderStatus(statusResponse.status);
+        const newStatus = mapProviderStatus(statusResponse.status || "pending");
         
         // Only update if status changed
         if (newStatus !== order.status) {

@@ -126,9 +126,9 @@ export default function OrderForm({ services, userBalance }: OrderFormProps) {
   };
 
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
+    <div className="grid lg:grid-cols-[1fr_400px] gap-4 md:gap-6">
       {/* Left: Service Selection */}
-      <div className="lg:col-span-2 space-y-6">
+      <div className="space-y-4 md:space-y-6 order-2 lg:order-1">
         {/* Platform Filter */}
         <div className="bg-surface-container-lowest rounded-xl md:rounded-2xl p-4 md:p-6 shadow-card">
           <h3 className="text-base md:text-lg font-bold text-on-surface mb-3 md:mb-4">Select Platform</h3>
@@ -281,20 +281,22 @@ export default function OrderForm({ services, userBalance }: OrderFormProps) {
 
         {/* Order Form */}
         <form onSubmit={handleSubmit} className="bg-surface-container-lowest rounded-xl md:rounded-2xl p-4 md:p-6 shadow-card space-y-4">
-          <h3 className="text-base md:text-lg font-bold text-on-surface mb-3 md:mb-4">Place Order</h3>
+          <>
+            <h3 className="text-base md:text-lg font-bold text-on-surface mb-3 md:mb-4">Place Order</h3>
 
           {/* Selected Service */}
           {selectedService && (
-            <div className="p-3 md:p-4 rounded-lg md:rounded-xl bg-primary/10 border border-primary/20">
-              <p className="text-xs text-on-surface-variant mb-1">Selected Service</p>
-              <p className="font-medium text-sm md:text-base text-on-surface line-clamp-2">{selectedService.name}</p>
-              <p className="text-xs text-on-surface-variant mt-1">
-                ${Number(selectedService.rate).toFixed(2)} per 1000
-              </p>
-            </div>
+            <>
+              <div className="p-3 md:p-4 rounded-lg md:rounded-xl bg-primary/10 border border-primary/20">
+                <p className="text-xs text-on-surface-variant mb-1">Selected Service</p>
+                <p className="font-medium text-sm md:text-base text-on-surface line-clamp-2">{selectedService.name}</p>
+                <p className="text-xs text-on-surface-variant mt-1">
+                  ${Number(selectedService.rate).toFixed(2)} per 1000
+                </p>
+              </div>
+            </>
           )}
 
-          {/* Link Input */}
           <div>
             <label className="block text-xs md:text-sm font-medium text-on-surface mb-2">
               Link <span className="text-error">*</span>
@@ -341,7 +343,7 @@ export default function OrderForm({ services, userBalance }: OrderFormProps) {
               placeholder={selectedService ? `${selectedService.min_quantity} - ${selectedService.max_quantity}` : "Enter quantity"}
               min={selectedService?.min_quantity}
               max={selectedService?.max_quantity}
-              disabled={selectedService?.features?.custom_comments && customComments !== ""}
+              disabled={!!(selectedService?.features?.custom_comments && customComments !== "")}
               className="w-full px-3 md:px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-surface-container border border-outline-variant/20 text-on-surface text-sm placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
               required
             />
@@ -397,6 +399,7 @@ export default function OrderForm({ services, userBalance }: OrderFormProps) {
               Insufficient balance. Please add funds.
             </p>
           )}
+          </>
         </form>
       </div>
     </div>

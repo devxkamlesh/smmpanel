@@ -22,6 +22,7 @@ export interface CreateOrderRequest {
   quantity: number;
   runs?: number; // For subscription services
   interval?: number; // For subscription services
+  comments?: string; // For custom comments services
 }
 
 export interface CreateOrderResponse {

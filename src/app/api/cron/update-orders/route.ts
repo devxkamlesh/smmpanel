@@ -10,7 +10,7 @@ import { NextResponse } from "next/server";
  * {
  *   "crons": [{
  *     "path": "/api/cron/update-orders",
- *     "schedule": "*/5 * * * *"
+ *     "schedule": "every 5 minutes"
  *   }]
  * }
  * 
